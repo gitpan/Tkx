@@ -1,7 +1,7 @@
 package Tkx;
 
 use strict;
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 {
     # predeclare
@@ -156,15 +156,18 @@ sub AUTOLOAD {
     }
 
     my $prefix = substr($method, 0, 2);
+    if ($prefix eq "m_") {
+	my @i = Tkx::i::expand_name(substr($method, 2));
+        my $p = $self->_mpath($i[0]);
+        return scalar(Tkx::i::call($p, @i, @_)) if $p eq $$self || !$class{$p};
+        return (bless \$p, $class{$p})->$method(@_);
+    }
+
     if ($prefix eq "g_") {
         return scalar(Tkx::i::call(Tkx::i::expand_name(substr($method, 2)), $$self, @_));
     }
 
-    if ($prefix eq "m_") {
-	my @i = Tkx::i::expand_name(substr($method, 2));
-	return scalar(Tkx::i::call($self->_mpath($i[0]), @i, @_));
-    }
-    elsif (index($prefix, "_") != -1) {
+    if (index($prefix, "_") != -1) {
 	require Carp;
 	Carp::croak("method '$method' reserved by Tkx");
     }
@@ -683,6 +686,8 @@ uses Tkx for the Perl examples.
 
 More information about Tcl/Tk can be found at L<http://www.tcl.tk/>.
 Tk documentation is also available at L<http://aspn.activestate.com/ASPN/docs/ActiveTcl/at.pkg_index.html>.
+
+The official source repository for Tkx is L<http://github.com/gisle/tkx/>.
 
 Alternative Tk bindings for Perl are described in L<Tcl::Tk> and L<Tk>.
 

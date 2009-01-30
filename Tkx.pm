@@ -1,7 +1,7 @@
 package Tkx;
 
 use strict;
-our $VERSION = '1.06';
+our $VERSION = '1.07';
 
 {
     # predeclare
@@ -93,6 +93,12 @@ sub _kid {
     my($self, $name) = @_;
     substr($name, 0, 0) = $$self eq "." ? "." : "$$self.";
     return $self->_nclass->new($name);
+}
+
+sub _kids {
+    my $self = shift;
+    my $nclass = $self->_nclass;
+    return map $nclass->new($_), Tkx::SplitList(Tkx::winfo_children($self));
 }
 
 sub _parent {
@@ -423,6 +429,16 @@ Examples:
     if (Tkx::tk_windowingsystem() eq "x11") { ... }
     if (Tkx::tk___messageBox( ... ) eq "yes") { ... }
 
+One part of the Tcl namespace that is not conveniently mapped to Perl
+in this way are commands that use "." as part of their name, mostly Tk
+widget instances.  If you insist you can invoke these by quoting the
+Perl function name
+
+    &{"Tkx::._configure"}(-background => "black");
+
+but the real solution is to use C<Tkx::widget> to wrap these as
+described below.
+
 The arguments passed can be plain scalars, array references, code
 references, or scalar references.
 
@@ -521,6 +537,10 @@ Returns a handle for a kid widget with the given name.  The $name can
 contain dots to access grandkids.  There is no check that a kid with
 the given name actually exists; which can be taken advantage of to construct
 names of Tk widgets to be created later.
+
+=item $w->_kids
+
+Returns all existing kids as widget objects.
 
 =item $w->_class( $class )
 

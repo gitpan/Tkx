@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Tkx
-version:            1.06
+version:            1.07
 abstract:           Yet another Tk interface
 author:
     - Gisle Aas <gisle@activestate.com>

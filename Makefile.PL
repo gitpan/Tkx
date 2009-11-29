@@ -5,10 +5,10 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME => "Tkx",
-    VERSION_FROM => 'Tkx.pm',
-    ABSTRACT_FROM => 'Tkx.pm',
+    VERSION_FROM => 'lib/Tkx.pm',
+    ABSTRACT_FROM => 'lib/Tkx.pm',
     PREREQ_PM => {
-	Tcl => 0.81,
+	Tcl => 0.98,
     },
     AUTHOR => 'Gisle Aas <gisle@activestate.com>',
     EXE_FILES => [qw(tkx-ed tkx-prove)],

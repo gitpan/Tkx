@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Tkx
-version:            1.07
+version:            1.08
 abstract:           Yet another Tk interface
 author:
     - Gisle Aas <gisle@activestate.com>
@@ -8,9 +8,11 @@ license:            perl
 distribution_type:  module
 configure_requires:
     ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
 requires:
     perl:  5.008
-    Tcl:   0.81
+    Tcl:   0.98
 resources:
     MailingList:  mailto:tcltk@perl.org
     repository:   http://github.com/gisle/tkx/
@@ -18,7 +20,7 @@ no_index:
     directory:
         - t
         - inc
-generated_by:       ExtUtils::MakeMaker version 6.4801
+generated_by:       ExtUtils::MakeMaker version 6.55_02
 meta-spec:
     url:      http://module-build.sourceforge.net/META-spec-v1.4.html
     version:  1.4

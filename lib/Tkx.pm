@@ -1,7 +1,7 @@
 package Tkx;
 
 use strict;
-our $VERSION = '1.08';
+our $VERSION = '1.09';
 
 {
     # predeclare
@@ -224,6 +224,10 @@ BEGIN {
     $interp->Init;
 }
 
+sub interp {
+    return $interp;
+}
+
 sub expand_name {
     my(@f) = (shift);
     @f = split(/(?<!_)_(?!_)/, $f[0]) if wantarray;
@@ -375,7 +379,7 @@ the Tcl/Tk documentation with no surprises added by the Perl layer.
 
 This is the "reference manual" for Tkx. For a gentle introduction please
 read the L<Tkx::Tutorial>.  The tutorial at
-L<http://www.tkdocs.com/tutorial/> is also strongly recommened.
+L<http://www.tkdocs.com/tutorial/> is also strongly recommended.
 
 =head2 Functions
 
@@ -385,7 +389,7 @@ The following functions are provided:
 
 =item Tkx::AUTOLOAD( @args )
 
-All calls into the C<< Tkx:: >> namespace not explictly listed here are trapped
+All calls into the C<< Tkx:: >> namespace not explicitly listed here are trapped
 by Perl's AUTOLOAD mechanism and turned into a call of the corresponding Tcl or
 Tk command.  The Tcl string result is returned as a single value in both scalar
 and list context.  Tcl errors are propagated as Perl exceptions.
@@ -404,7 +408,7 @@ Commands"> below.
 Don't call Tkx::AUTOLOAD() directly yourself.
 
 The available Tcl commands are documented at
-L<http://www.tcl.tk/man/tcl/TclCmd/contents.htm>.  The availale Tk commands are
+L<http://www.tcl.tk/man/tcl/TclCmd/contents.htm>.  The available Tk commands are
 documented at L<http://www.tcl.tk/man/tcl/TkCmd/contents.htm>.
 
 =item Tkx::Ev( $field, ... )
@@ -449,7 +453,7 @@ let Tcl do the globbing for you.  The example above is purely educational.
 
 The Tkx::list() function would invoke the Tcl command that does the reverse
 operation -- creating a list from the arguments passed in. You seldom need to
-call Tkx::list() explictly as arrays are automatically converted to Tcl lists
+call Tkx::list() explicitly as arrays are automatically converted to Tcl lists
 when passed as arguments to Tcl commands.
 
 =back
@@ -503,11 +507,11 @@ these as described in L</"Widget handles"> below.
 =head3 Passing arguments
 
 The arguments passed to Tcl can be plain scalars, array references, code
-references, or scalar references.
+references, scalar references, or hash references.
 
 Plain scalars (strings and numbers) as just passed on unchanged to Tcl.
 
-Arrays, where the first element is not a code reference, are converted into Tcl
+Array references, where the first element is not a code reference, are converted into Tcl
 lists and passed on.  The arrays can contain strings, numbers, and/or array
 references to form nested lists.
 
@@ -521,6 +525,11 @@ namespace that is tied to the corresponding variable on the Perl side.
 Any changes to the variable on the Perl side will be reflected in the value
 on the Tcl side.  Any changes to the variable on the Tcl side will be reflected
 in the value on the Perl side.
+
+Hash references are converted into special Tcl array variables in the "::perl" Tcl
+namespace that is tied to the corresponding hash on the Perl side.  Any changes to
+the hash on the Perl side will be reflected in the array on the Tcl side. Any
+changes to the array on the Tcl side will be reflected in the hash on the Perl side.
 
 Anything else will just be converted to strings using the Perl rules for
 stringification and passed on to Tcl.
